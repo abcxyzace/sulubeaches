@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sulu Beach Resorts and Weather</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #e6b800;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #fff;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Weather Forecast Section */
+        .forecast-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .forecast-card {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+        }
+        .temperature {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        .weather-description {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        /* Beaches Section */
+        .beach-section {
+            margin-top: 40px;
+        }
+        .beach {
+            margin: 20px 0;
+        }
+        .beach img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>Today's Weather Forecast</h1>
+        </header>
+
+        <!-- Weather Forecast Section -->
+        <section class="forecast-section">
+            <div class="forecast-card" id="mangsali">
+                <h2>Mang Sali Beach, Parang Sulu</h2>
+                <p class="temperature" id="mangsali-temp">Loading...</p>
+                <p class="weather-description" id="mangsali-desc">Loading...</p>
+            </div>
+            <div class="forecast-card" id="tandu">
+                <h2>Tandu Beach, Parang Sulu</h2>
+                <p class="temperature" id="tandu-temp">Loading...</p>
+                <p class="weather-description" id="tandu-desc">Loading...</p>
+            </div>
+            <div class="forecast-card" id="mauboh">
+                <h2>Mauboh Beach, Patikul Sulu</h2>
+                <p class="temperature" id="mauboh-temp">Loading...</p>
+                <p class="weather-description" id="mauboh-desc">Loading...</p>
+            </div>
+        </section>
+
+        <!-- Beach Section -->
+        <section class="beach-section">
+            <h2>Beaches in Sulu</h2>
+            <div class="beach">
+                <h3>Mang Sali Beach</h3>
+                <p>Experience the beautiful waters and scenic views at Mang Sali Beach.</p>
+                <img src="https://i.ytimg.com/vi/ttHGLDaAM6I/maxresdefault.jpg" alt="Mang Sali Beach">
+            </div>
+            <div class="beach">
+                <h3>Tandu Beach</h3>
+                <p>Relax and enjoy the stunning sands at Tandu Beach.</p>
+                <img src="https://example.com/tandu_beach.jpg" alt="Tandu Beach">
+            </div>
+            <div class="beach">
+                <h3>Mauboh Beach</h3>
+                <p>Explore the pristine coastline of Mauboh Beach.</p>
+                <img src="https://example.com/mauboh_beach.jpg" alt="Mauboh Beach">
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript for Fetching Weather Data -->
+    <script>
+        const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+
+        const locations = {
+            mangsali: { name: 'Mang Sali Beach, Parang Sulu', lat: 5.9714, lon: 121.0214 },
+            tandu: { name: 'Tandu Beach, Parang Sulu', lat: 5.9781, lon: 121.0235 },
+            mauboh: { name: 'Mauboh Beach, Patikul Sulu', lat: 6.0368, lon: 121.1468 }
+        };
+
+        async function fetchWeather(location, tempElementId, descElementId) {
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=imperial&appid=${apiKey}`);
+                const data = await response.json();
+
+                document.getElementById(tempElementId).textContent = `${Math.round(data.main.temp)}°F`;
+                document.getElementById(descElementId).textContent = data.weather[0].description;
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+                document.getElementById(tempElementId).textContent = "Error";
+                document.getElementById(descElementId).textContent = "Error";
+            }
+        }
+
+        // Fetch weather for each location
+        fetchWeather(locations.mangsali, 'mangsali-temp', 'mangsali-desc');
+        fetchWeather(locations.tandu, 'tandu-temp', 'tandu-desc');
+        fetchWeather(locations.mauboh, 'mauboh-temp', 'mauboh-desc');
+    </script>
+</body>
+</html>
